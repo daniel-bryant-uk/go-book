@@ -20,7 +20,7 @@ func main() {
 	}
 	fmt.Println(s)
 
-	fmt.Printf("Loop time -> %.2fs elapse\n", time.Since(start).Seconds())
+	fmt.Printf("Loop time -> %.2fs elapsed\n", time.Since(start).Seconds())
 
 	//2
 	s, sep = "", ""
