@@ -27,22 +27,23 @@ func main() {
 	r.HandleFunc("/products", productsHandler)
 	r.HandleFunc("/product/{productId}", productHandler)
 
+	log.Print("Starting server...")
 	log.Fatal(http.ListenAndServe(":3000", r))
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Ready")
+	fmt.Fprint(w, "Ready\n")
 }
 
 func productsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Products")
-	fmt.Fprintf(w, "The product is %v", products)
+	fmt.Fprintf(w, "Products\n")
+	fmt.Fprintf(w, "The products are %v\n", products)
 }
 
 func productHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	productId := vars["productId"]
-	fmt.Fprintf(w, "You selected %s", productId)
+	fmt.Fprintf(w, "You selected %s\n", productId)
 }
 
 func createTestUsers() {
