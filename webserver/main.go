@@ -7,7 +7,13 @@ import (
 	"net/http"
 	"fmt"
 	"strconv"
+	"math/rand"
+	"time"
 )
+
+//I would like this to be a const, but not possible (I think) with Go's compile time set const
+var instanceId = generateInstanceId()
+
 
 type Product struct {
 	Id    string `json:"id"`
@@ -23,6 +29,11 @@ func init() {
 	createTestUsers()
 }
 
+func generateInstanceId() int {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return r.Intn(1000)
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
@@ -35,7 +46,7 @@ func main() {
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Ready\n")
+	fmt.Fprintf(w, "Ready (instance id: %v)\n", instanceId)
 }
 
 func productsHandler(w http.ResponseWriter, r *http.Request) {
