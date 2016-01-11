@@ -29,11 +29,7 @@ func init() {
 	createTestUsers()
 }
 
-func generateInstanceId() int {
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	return r.Intn(1000)
-}
-
+//
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
@@ -44,6 +40,8 @@ func main() {
 	log.Print("Starting server...")
 	log.Fatal(http.ListenAndServe(":3000", r))
 }
+
+// --- handler functions ---
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Ready (instance id: %v)\n", instanceId)
@@ -58,12 +56,6 @@ func productHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	productId := vars["productId"]
 	fmt.Fprintf(w, "You selected %s\n", productId)
-}
-
-func createTestUsers() {
-	products[0] = Product{"1", "Daniel", "daniel.bryant@test.com"}
-	products[1] = Product{"2", "Ashley", "ashley@test.com"}
-	products[2] = Product{"3", "Rusty", "rusty@test.com"}
 }
 
 func productCreateHandler(w http.ResponseWriter, r *http.Request) {
@@ -90,4 +82,19 @@ func productCreateHandler(w http.ResponseWriter, r *http.Request) {
 	newProduct := Product{strconv.Itoa(id), name, email}
 	products[3] = newProduct
 	w.WriteHeader(http.StatusCreated)
+}
+
+// --- utility functions ---
+
+//Generate randomised id to track this particular instance when executing
+func generateInstanceId() int {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	return r.Intn(1000)
+}
+
+//Create simple test users
+func createTestUsers() {
+	products[0] = Product{"1", "Daniel", "daniel.bryant@test.com"}
+	products[1] = Product{"2", "Ashley", "ashley@test.com"}
+	products[2] = Product{"3", "Rusty", "rusty@test.com"}
 }
