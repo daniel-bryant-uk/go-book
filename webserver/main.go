@@ -15,7 +15,6 @@ import (
 //I would like this to be a const, but not possible (I think) with Go's compile time set const
 var instanceId = generateInstanceId()
 
-
 type Product struct {
 	Id    string `json:"id"`
 	Name  string `json:"name"`
@@ -49,7 +48,6 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func productsHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Fprintf(w, "Products\n")
 	json, err := json.Marshal(products)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -60,8 +58,15 @@ func productsHandler(w http.ResponseWriter, r *http.Request) {
 
 func productHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	productId := vars["productId"]
-	fmt.Fprintf(w, "You selected %s\n", productId)
+	productIdStr := vars["productId"]
+	//TODO: Much better error checking thoroughout method!!
+	productId, _ := strconv.Atoi(productIdStr)
+	json, err := json.Marshal(products[productId - 1])
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "%s", json)
 }
 
 func productCreateHandler(w http.ResponseWriter, r *http.Request) {
