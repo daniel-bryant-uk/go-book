@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"math/rand"
 	"time"
+	"encoding/json"
 )
 
 //I would like this to be a const, but not possible (I think) with Go's compile time set const
@@ -48,8 +49,13 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func productsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Products\n")
-	fmt.Fprintf(w, "The products are %v\n", products)
+	//fmt.Fprintf(w, "Products\n")
+	json, err := json.Marshal(products)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "%s", json)
 }
 
 func productHandler(w http.ResponseWriter, r *http.Request) {
