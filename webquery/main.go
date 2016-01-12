@@ -15,7 +15,7 @@ type Product struct {
 }
 
 func main() {
-	resp, err := http.Get("http://localhost:3000/product/1")
+	resp, err := http.Get("http://localhost:3000/products")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -23,6 +23,10 @@ func main() {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	res := Product{}
-	json.Unmarshal(body, &res)
-	fmt.Printf("Received %v", res)
+	err = json.Unmarshal(body, &res)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	} else {
+		fmt.Printf("Received %v", res)
+	}
 }
