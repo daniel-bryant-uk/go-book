@@ -13,7 +13,13 @@ type Config struct {
 }
 
 func main() {
-	file, err := os.Open("config.json")
+	args := os.Args
+	if len(args) < 2 {
+		fmt.Fprintln(os.Stderr, "Usage: main filename")
+		os.Exit(1)
+	}
+
+	file, err := os.Open(args[1])
 	if err!= nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
