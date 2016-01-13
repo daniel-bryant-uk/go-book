@@ -1,0 +1,9 @@
+{
+  "OptionA": true,
+  "OptionB": "test",
+  "OptionC": [
+    "cat",
+    "dog",
+    "fish"
+  ]
+}
