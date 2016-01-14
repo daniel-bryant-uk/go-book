@@ -33,6 +33,7 @@ func init() {
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", homeHandler)
+	r.HandleFunc("/health", healthHandler)
 	r.HandleFunc("/products", productsHandler)
 	r.HandleFunc("/product/{productId}", productHandler).Methods("GET")
 	r.HandleFunc("/product", productCreateHandler).Methods("POST")
@@ -93,6 +94,10 @@ func productCreateHandler(w http.ResponseWriter, r *http.Request) {
 	newProduct := Product{strconv.Itoa(id), name, email}
 	products[3] = newProduct
 	w.WriteHeader(http.StatusCreated)
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
 }
 
 // --- utility functions ---
