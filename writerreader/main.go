@@ -7,17 +7,21 @@ import (
 	"log"
 	"io/ioutil"
 	"time"
+	"sync"
 )
 
 var counter = 1
+var wg sync.WaitGroup
 
 func main() {
+
+	wg.Add(2)
 	go startClient()
 	go startServer()
 
-	fmt.Println("Done")
-	//TODO: Extremely hacky - replace this with WaitGroups
-	fmt.Scanln()
+	fmt.Println("Waiting...")
+	wg.Wait()
+	fmt.Println("Completed!")
 }
 
 func startClient() {
@@ -27,6 +31,7 @@ func startClient() {
 		fmt.Printf("Starting server...\n")
 		log.Fatal(http.ListenAndServe(":3000", r))
 	}
+	wg.Done()
 }
 
 func startServer() {
@@ -43,6 +48,7 @@ func startServer() {
 		fmt.Printf("Received: %s\n", body)
 		time.Sleep(time.Second)
 	}
+	wg.Done()
 }
 
 ///----
