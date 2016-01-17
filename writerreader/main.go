@@ -24,7 +24,7 @@ func main() {
 	fmt.Println("Completed!")
 }
 
-func startClient() {
+func startServer() {
 	for {
 		r := mux.NewRouter()
 		r.HandleFunc("/", homeHandler)
@@ -34,7 +34,7 @@ func startClient() {
 	wg.Done()
 }
 
-func startServer() {
+func startClient() {
 	for {
 		resp, err := http.Get("http://localhost:3000/")
 		if err != nil {
